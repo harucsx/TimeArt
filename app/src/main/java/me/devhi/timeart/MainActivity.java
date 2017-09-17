@@ -112,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 HomeFragment homeFragment = new HomeFragment();
                 transaction.replace(R.id.fragment_container, homeFragment);
                 transaction.commit();
-                txtTitle.setText("공기를 봅니다.");
+                txtTitle.setText("공기를 봅니다..");
                 break;
             case FRAGMENT_REPORT:
                 ReportFragment reportFragment = new ReportFragment();
