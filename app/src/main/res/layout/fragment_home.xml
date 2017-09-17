@@ -18,7 +18,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="18dp"
             android:gravity="center"
             android:text="초미세먼지 PM2.5"
             android:textColor="#FFFFFF"
@@ -37,7 +37,7 @@
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="50dp"
             app:layout_constraintHorizontal_bias="0.505"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -54,6 +54,7 @@
                     android:layout_weight="1" />
 
                 <TextView
+                    android:id="@+id/txtDataState"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -66,6 +67,7 @@
                     android:textSize="32sp" />
 
                 <TextView
+                    android:id="@+id/txtDataValue"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
@@ -78,6 +80,7 @@
                     android:textSize="25sp" />
 
                 <TextView
+                    android:id="@+id/txtDataTime"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
@@ -124,21 +127,21 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:srcCompat="@mipmap/home_whirl_04"
-                android:layout_alignParentTop="true"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                app:srcCompat="@mipmap/home_whirl_04" />
         </RelativeLayout>
 
         <LinearLayout
             android:id="@+id/linearLayout"
-            android:layout_width="237dp"
+            android:layout_width="280dp"
             android:layout_height="70dp"
             android:layout_marginEnd="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="18dp"
             android:orientation="horizontal"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -157,14 +160,12 @@
                     android:orientation="vertical">
 
                     <ImageView
-                        android:id="@+id/imageView3"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         app:srcCompat="@mipmap/home_ic_temper" />
 
                     <TextView
-                        android:id="@+id/textView3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -176,7 +177,7 @@
 
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/txtDataTemp"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -219,7 +220,7 @@
 
 
                 <TextView
-                    android:id="@+id/textView4"
+                    android:id="@+id/txtDataHumid"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
@@ -232,7 +233,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="246dp"
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
             android:layout_marginLeft="8dp"
@@ -250,7 +251,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/txtDataDust25"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -258,13 +259,15 @@
                     android:layout_weight="1"
                     android:background="@mipmap/rounded_border"
                     android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:text="초미세먼지 PM2.5\n10 μg/m³"
                     android:textColor="#ffffff"
                     android:textSize="10sp" />
 
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/txtDataDust100"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="5dp"
@@ -272,6 +275,8 @@
                     android:layout_weight="1"
                     android:background="@mipmap/rounded_border"
                     android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:text="미세먼지 PM10\n12 μg/m³"
                     android:textColor="#ffffff"
                     android:textSize="10sp" />
@@ -283,7 +288,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/txtDataDCIndex"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="10dp"
@@ -291,13 +296,15 @@
                     android:layout_weight="1"
                     android:background="@mipmap/rounded_border"
                     android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:text="불쾌지수 12"
                     android:textColor="#ffffff"
                     android:textSize="10sp" />
 
 
                 <TextView
-                    android:id="@+id/textView5"
+                    android:id="@+id/txtDataCO2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
@@ -305,6 +312,8 @@
                     android:layout_weight="1"
                     android:background="@mipmap/rounded_border"
                     android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
                     android:text="이산화탄소 1825ppm"
                     android:textColor="#ffffff"
                     android:textSize="10sp" />
