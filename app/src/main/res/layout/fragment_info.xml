@@ -5,13 +5,15 @@
     tools:context="me.devhi.timeart.InfoFragment">
 
     <TextView
+
         android:id="@+id/textView2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_marginTop="18dp"
         android:background="#1AFFFFFF"
+        android:gravity="center"
+        android:text="INFORMATION AREA"
         android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        android:text="INFORMATION AREA" />
+        android:textSize="18sp" />
 
 </FrameLayout>

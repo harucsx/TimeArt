@@ -7,6 +7,15 @@ public class EnvData {
     private int co2 = 0;
     private double temp = 0.0;
     private double humid = 0.0;
+    private String datetime = "";
+
+    public String getDatetime() {
+        return datetime;
+    }
+
+    public void setDatetime(String datetime) {
+        this.datetime = datetime;
+    }
 
     public int getDust25() {
         return dust25;

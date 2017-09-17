@@ -21,11 +21,11 @@ public class EnvDataMode {
         return envData;
     }
 
-    static void setMode(int mode){
+    static void setMode(int mode) {
         EnvDataMode.mode = mode;
     }
-    
-    static int getMode(){
+
+    static int getMode() {
         return EnvDataMode.mode;
     }
 
@@ -34,35 +34,35 @@ public class EnvDataMode {
         return value;
     }
 
-    static String getStateString(){
-        if (EnvDataMode.value < 30) {
+    static String getStateString() {
+        if (getValue() < 30.0f) {
             return "좋음";
-        } else if (EnvDataMode.value  < 80) {
+        } else if (getValue() < 80.0f) {
             return "보통";
-        } else if (EnvDataMode.value  < 150) {
+        } else if (getValue() < 150.0f) {
             return "나쁨";
         } else {
             return "매우 나쁨";
         }
     }
 
-    static int getState(){
-        if (EnvDataMode.value < 30) {
+    static int getState() {
+        if (getValue() < 30.0f) {
             return EnvDataMode.GOOD;
-        } else if (EnvDataMode.value  < 80) {
+        } else if (getValue() < 80.0f) {
             return EnvDataMode.NORMAL;
-        } else if (EnvDataMode.value  < 150) {
+        } else if (getValue() < 150.0f) {
             return EnvDataMode.BAD;
         } else {
             return EnvDataMode.VERY_BAD;
         }
     }
-    
-    static String getName(){
+
+    static String getName() {
         return getOtherName(EnvDataMode.mode);
     }
-    
-    static String getOtherName(int mode){
+
+    static String getOtherName(int mode) {
         switch (EnvDataMode.mode) {
             case DUST25:
                 return "초미세먼지 PM2.5";
@@ -77,7 +77,7 @@ public class EnvDataMode {
         return "null";
     }
 
-    static String getCode(){
+    static String getCode() {
         switch (EnvDataMode.mode) {
             case DUST25:
                 return "dust25";
@@ -92,16 +92,34 @@ public class EnvDataMode {
         return "null";
     }
 
-    static void refreshCurrentValue(){
+    static void refreshCurrentValue() {
         switch (EnvDataMode.mode) {
             case DUST25:
-                value = getEnvData().getDust25();
+                value = (double) getEnvData().getDust25();
+                break;
             case DUST100:
-                value = getEnvData().getDust100();
+                value = (double) getEnvData().getDust100();
+                break;
             case DC_INDEX:
-                value = getEnvData().getDcIndex();
+                value = (double) getEnvData().getDcIndex();
+                break;
             case CO2:
-                value = getEnvData().getCo2();
+                value = (double) getEnvData().getCo2();
+                break;
         }
+    }
+
+    static String getCurrentUnit(){
+        switch (EnvDataMode.mode) {
+            case DUST25:
+            case DUST100:
+                return "μg/m³";
+            case DC_INDEX:
+                return "";
+            case CO2:
+                return "ppm";
+        }
+
+        return "";
     }
 }

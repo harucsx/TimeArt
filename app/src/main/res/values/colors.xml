@@ -5,4 +5,8 @@
     <!--<color name="colorPrimary">#326185</color>-->
     <!--<color name="colorPrimaryDark">#326185</color>-->
     <color name="colorAccent">#dc2f46</color>
+    <color name="colorChartBackground">#f5d9eaf4</color>
+    <color name="colorBR">#1572bd</color>
+    <color name="colorGR">#034c2f</color>
+    <color name="colorRD">#dc2f46</color>
 </resources>

@@ -1,5 +1,6 @@
 package me.devhi.timeart;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -62,41 +63,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                             .setCallback(new FutureCallback<JsonObject>() {
                                 @Override
                                 public void onCompleted(Exception e, JsonObject result) {
-                                    txtDataTypeTitle.setText(Html.fromHtml("<u>" + EnvDataMode.getName() + "</u>"));
-
-                                    int current_value = result.get("dust25").getAsInt();
-                                    int background_resource = 0;
-
-                                    switch (EnvDataMode.getState()){
-                                        case EnvDataMode.GOOD:
-                                            background_resource = R.mipmap.bg_good;
-                                            break;
-                                        case EnvDataMode.NORMAL:
-
-                                            background_resource = R.mipmap.bg_normal;
-                                            break;
-                                        case EnvDataMode.BAD:
-
-                                            background_resource = R.mipmap.bg_bad;
-                                            break;
-                                        case EnvDataMode.VERY_BAD:
-
-                                            background_resource = R.mipmap.bg_bad;
-                                            break;
-                                    }
-
-                                    ((MainActivity) getActivity()).BackgroundLayout.setBackground(ContextCompat.getDrawable(getContext(), background_resource));
-
-                                    txtDataState.setText(EnvDataMode.getStateString());
-                                    txtDataValue.setText(result.get("dust25").getAsString() + " μg/m³");
-                                    txtDataTime.setText(result.get("created_at").getAsString());
-                                    txtDataTemp.setText(result.get("temp").getAsString() + " ℃");
-                                    txtDataHumid.setText(result.get("humid").getAsString() + "%");
-                                    txtDataDust25.setText("초미세먼지 PM2.5\n" + result.get("dust25").getAsString() + " μg/m³");
-                                    txtDataDust100.setText("미세먼지 PM10\n" + result.get("dust100").getAsString() + " μg/m³");
-                                    txtDataDCIndex.setText("불쾌지수 " + result.get("discomfort_index").getAsString());
-                                    txtDataCO2.setText("이산화탄소 " + result.get("co2").getAsString() + "ppm");
-
+                                    saveDataSet(result);
+                                    changeDataSet();
                                 }
                             });
 
@@ -115,6 +83,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onDetach() {
         super.onDetach();
+
+        ((MainActivity) getActivity()).BackgroundLayout.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.bg_good));
     }
 
     @Override
@@ -128,6 +98,98 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         } else if (v == txtDataCO2) {
             EnvDataMode.setMode(EnvDataMode.CO2);
         }
+
+        changeDataSet();
+    }
+
+    private void saveDataSet(JsonObject result){
+        EnvData envData = EnvDataMode.getEnvData();
+
+        envData.setDust25(result.get("dust25").getAsInt());
+        envData.setDust100(result.get("dust100").getAsInt());
+        envData.setDcIndex(result.get("discomfort_index").getAsInt());
+        envData.setCo2(result.get("co2").getAsInt());
+        envData.setTemp(result.get("temp").getAsDouble());
+        envData.setHumid(result.get("humid").getAsDouble());
+        envData.setDatetime(result.get("created_at").getAsString());
+    }
+
+    private void changeDataSet(){
+        changeDataBackground();
+        changeDataButton();
+        changeDataButtonStyle();
+    }
+
+    private void changeDataBackground(){
+        int background_resource = 0;
+
+        switch (EnvDataMode.getState()) {
+            case EnvDataMode.GOOD:
+                background_resource = R.mipmap.bg_good;
+                break;
+            case EnvDataMode.NORMAL:
+                background_resource = R.mipmap.bg_normal;
+                break;
+            case EnvDataMode.BAD:
+            case EnvDataMode.VERY_BAD:
+                background_resource = R.mipmap.bg_bad;
+                break;
+        }
+
+        ((MainActivity) getActivity()).BackgroundLayout.setBackground(ContextCompat.getDrawable(getContext(), background_resource));
+
+    }
+
+    private void changeDataButton(){
+        EnvData envData = EnvDataMode.getEnvData();
+
+        txtDataTypeTitle.setText(Html.fromHtml("<u>" + EnvDataMode.getName() + "</u>"));
+        txtDataState.setText(EnvDataMode.getStateString());
+        txtDataValue.setText(EnvDataMode.getValue() + " " + EnvDataMode.getCurrentUnit());
+        txtDataTime.setText(envData.getDatetime());
+        txtDataTemp.setText(envData.getTemp() + " ℃");
+        txtDataHumid.setText(envData.getHumid() + "%");
+        txtDataDust25.setText("초미세먼지 PM2.5\n" + envData.getDust25() + " μg/m³");
+        txtDataDust100.setText("미세먼지 PM10\n" + envData.getDust100() + " μg/m³");
+        txtDataDCIndex.setText("불쾌지수 " + envData.getDcIndex());
+        txtDataCO2.setText("이산화탄소 " + envData.getCo2() + "ppm");
+    }
+
+    private void changeDataButtonStyle(){
+        Drawable data_background = null;
+
+        switch (EnvDataMode.getState()){
+            case EnvDataMode.GOOD:
+                data_background = getResources().getDrawable(R.mipmap.rounded_border_br);
+                break;
+            case EnvDataMode.NORMAL:
+                data_background = getResources().getDrawable(R.mipmap.rounded_border_gr);
+                break;
+            case EnvDataMode.BAD:
+            case EnvDataMode.VERY_BAD:
+                data_background = getResources().getDrawable(R.mipmap.rounded_border_rd);
+                break;
+        }
+
+        txtDataDust25.setBackground(getResources().getDrawable(R.mipmap.rounded_border));
+        txtDataDust100.setBackground(getResources().getDrawable(R.mipmap.rounded_border));
+        txtDataDCIndex.setBackground(getResources().getDrawable(R.mipmap.rounded_border));
+        txtDataCO2.setBackground(getResources().getDrawable(R.mipmap.rounded_border));
+
+        switch (EnvDataMode.getMode()){
+            case EnvDataMode.DUST25:
+                txtDataDust25.setBackground(data_background);
+                break;
+            case EnvDataMode.DUST100:
+                txtDataDust100.setBackground(data_background);
+                break;
+            case EnvDataMode.DC_INDEX:
+                txtDataDCIndex.setBackground(data_background);
+                break;
+            case EnvDataMode.CO2:
+                txtDataCO2.setBackground(data_background);
+                break;
+        }
     }
 
 //    private void changeColor() {
@@ -140,13 +202,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 //        window.setStatusBarColor(null);
 //    }
 
-    private class EnvData {
-        int dust25;
-        int dust100;
-        int co2;
-        float temp;
-        float humid;
-    }
 
 //    private class EnvDataRecieveTask extends AsyncTask<String, EnvData, Void> {
 //        @Override

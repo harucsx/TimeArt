@@ -1,4 +1,5 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -20,17 +21,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:background="#70ffffff"
                 android:orientation="vertical">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:gravity="center"
                     android:layout_weight="1"
-                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="시간별"
                     android:textColor="#ffffff"
-                    android:text="시간별" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -50,17 +52,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:gravity="center"
                     android:layout_weight="1"
-                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="일별"
                     android:textColor="#ffffff"
-                    android:text="일별" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:background="#ffffff"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:visibility="invisible" />
             </LinearLayout>
 
             <LinearLayout
@@ -74,17 +77,18 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:gravity="center"
                     android:layout_weight="1"
-                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="주별"
                     android:textColor="#ffffff"
-                    android:text="주별" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:background="#ffffff"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:visibility="invisible" />
             </LinearLayout>
 
 
@@ -99,19 +103,149 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:gravity="center"
                     android:layout_weight="1"
-                    android:textSize="16sp"
+                    android:gravity="center"
+                    android:text="월별"
                     android:textColor="#ffffff"
-                    android:text="월별" />
+                    android:textSize="16sp" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="3dp"
                     android:background="#ffffff"
-                    android:orientation="vertical" />
+                    android:orientation="vertical"
+                    android:visibility="invisible" />
             </LinearLayout>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                app:srcCompat="@mipmap/ic_pm_2" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:gravity="center"
+                android:text="미세먼지 10μg 미만"
+                android:textColor="#ffffff"
+                android:textSize="20sp" />
+
+        </LinearLayout>
+
+        <com.github.mikephil.charting.charts.BarChart
+            android:id="@+id/report_chart"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:background="#20ffffff"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorBR"
+                    android:padding="5dp"
+                    android:text="좋음"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="평균 26mm"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="|"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="최대 26mm"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="|"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:text="최소 26mm"
+                    android:textColor="#ffffff"
+                    android:textSize="14sp" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:layout_marginTop="1dp"
+                android:padding="10dp"
+                android:background="#20ffffff"
+                android:textColor="#ffffff"
+                android:text="실내 미세먼지 평균수치는 1단계로 공기질 관리 상태가 양호합니다. 하루 중 8시에는 미세먼지 수치가 가장 높았습니다."
+                android:textSize="16sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="5dp"
+                android:background="#ffffff" />
         </LinearLayout>
     </LinearLayout>
 </FrameLayout>
