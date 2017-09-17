@@ -202,26 +202,4 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 //        window.setStatusBarColor(null);
 //    }
 
-
-//    private class EnvDataRecieveTask extends AsyncTask<String, EnvData, Void> {
-//        @Override
-//        protected void doInBackground(String... url) {
-//
-//        }
-//
-//        @Override
-//        protected void onPreExecute() {
-//            super.onPreExecute();
-//        }
-//
-//        @Override
-//        protected void onProgressUpdate(EnvData... envData) {
-//
-//        }
-//
-//        @Override
-//        protected void onPostExecute(void...) {
-//            // doInBackground 에서 받아온 total 값 사용 장소
-//        }
-//    }
 }
