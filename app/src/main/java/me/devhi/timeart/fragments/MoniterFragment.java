@@ -18,7 +18,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import io.realm.Sort;
 import me.devhi.timeart.models.EnvData;
@@ -55,12 +54,12 @@ public class MoniterFragment extends Fragment {
         setupChart();
         setupHistoryList();
 
-        initialEnvData();
+        initializeEnvData();
 
         return view;
     }
 
-    private void initialEnvData(){
+    private void initializeEnvData(){
         RealmResults<EnvData> results = realm.where(EnvData.class).findAllSorted("pk", Sort.DESCENDING);
         int limit = 10;
 
