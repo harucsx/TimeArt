@@ -1,5 +1,9 @@
-package me.devhi.timeart;
+package me.devhi.timeart.models;
 
+
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
 
 public class EnvDataMode {
     public final static int DUST25 = 1;
@@ -15,17 +19,16 @@ public class EnvDataMode {
     private static int mode = DUST25;
     private static double value = 0.0;
 
-    private static EnvData envData = new EnvData();
-
     public static EnvData getEnvData() {
-        return envData;
+        RealmResults<EnvData> results = Realm.getDefaultInstance().where(EnvData.class).findAllSorted("pk", Sort.DESCENDING);
+        return results.first();
     }
 
-    static void setMode(int mode) {
+    public static void setMode(int mode) {
         EnvDataMode.mode = mode;
     }
 
-    static int getMode() {
+    public static int getMode() {
         return EnvDataMode.mode;
     }
 
@@ -34,7 +37,7 @@ public class EnvDataMode {
         return value;
     }
 
-    static String getStateString() {
+    public static String getStateString() {
         if (getValue() < 30.0f) {
             return "좋음";
         } else if (getValue() < 80.0f) {
@@ -46,7 +49,7 @@ public class EnvDataMode {
         }
     }
 
-    static int getState() {
+    public static int getState() {
         if (getValue() < 30.0f) {
             return EnvDataMode.GOOD;
         } else if (getValue() < 80.0f) {
@@ -58,11 +61,11 @@ public class EnvDataMode {
         }
     }
 
-    static String getName() {
-        return getOtherName(EnvDataMode.mode);
+    public static String getName() {
+        return getStateName(EnvDataMode.mode);
     }
 
-    static String getOtherName(int mode) {
+    public static String getStateName(int mode) {
         switch (EnvDataMode.mode) {
             case DUST25:
                 return "초미세먼지 PM2.5";
@@ -77,7 +80,7 @@ public class EnvDataMode {
         return "null";
     }
 
-    static String getCode() {
+    public static String getCode() {
         switch (EnvDataMode.mode) {
             case DUST25:
                 return "dust25";
@@ -92,7 +95,7 @@ public class EnvDataMode {
         return "null";
     }
 
-    static void refreshCurrentValue() {
+    public static void refreshCurrentValue() {
         switch (EnvDataMode.mode) {
             case DUST25:
                 value = (double) getEnvData().getDust25();
@@ -101,7 +104,7 @@ public class EnvDataMode {
                 value = (double) getEnvData().getDust100();
                 break;
             case DC_INDEX:
-                value = (double) getEnvData().getDcIndex();
+                value = (double) getEnvData().getDiscomfortIndex();
                 break;
             case CO2:
                 value = (double) getEnvData().getCo2();
@@ -109,8 +112,12 @@ public class EnvDataMode {
         }
     }
 
-    static String getCurrentUnit(){
-        switch (EnvDataMode.mode) {
+    public static String getCurrentUnit() {
+        return getUnit(EnvDataMode.mode);
+    }
+
+    public static String getUnit(int mode) {
+        switch (mode) {
             case DUST25:
             case DUST100:
                 return "μg/m³";

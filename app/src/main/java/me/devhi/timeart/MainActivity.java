@@ -1,39 +1,30 @@
 package me.devhi.timeart;
 
 import android.support.constraint.ConstraintLayout;
-import android.support.design.widget.TabLayout;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.gson.JsonObject;
-import com.koushikdutta.async.future.FutureCallback;
-import com.koushikdutta.ion.Ion;
+import io.realm.Realm;
+import me.devhi.timeart.fragments.HomeFragment;
+import me.devhi.timeart.fragments.InfoFragment;
+import me.devhi.timeart.fragments.MoniterFragment;
+import me.devhi.timeart.fragments.ReportFragment;
+import me.devhi.timeart.fragments.SettingFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private ViewPager mViewPager;
+    public ConstraintLayout backgroundLayout;
+
     private TextView txtTitle;
     private LinearLayout btnReportTab, btnMoniterTab, btnHomeTab, btnInfoTab, btnSettingTab;
-    public ConstraintLayout BackgroundLayout;
 
     private final int FRAGMENT_REPORT = 1;
     private final int FRAGMENT_MONITER = 2;
@@ -46,8 +37,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Realm.init(this);
+
         txtTitle = (TextView) findViewById(R.id.txtTitle);
-        BackgroundLayout = (ConstraintLayout) findViewById(R.id.main_content);
+        backgroundLayout = (ConstraintLayout) findViewById(R.id.main_content);
 
         btnReportTab = (LinearLayout) findViewById(R.id.btnReportTab);
         btnMoniterTab = (LinearLayout) findViewById(R.id.btnMoniterTab);
@@ -62,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnSettingTab.setOnClickListener(this);
 
         changeFragment(FRAGMENT_HOME);
-
     }
 
 
@@ -104,7 +96,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void changeFragment(int fragmentNo) {
-
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
         switch (fragmentNo) {
@@ -139,6 +130,5 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 txtTitle.setText("설정");
                 break;
         }
-
     }
 }

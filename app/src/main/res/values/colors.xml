@@ -9,4 +9,10 @@
     <color name="colorBR">#1572bd</color>
     <color name="colorGR">#034c2f</color>
     <color name="colorRD">#dc2f46</color>
+
+    <drawable name="white00">#00ffffff</drawable>
+    <drawable name="white40">#40ffffff</drawable>
+    <drawable name="white55">#55ffffff</drawable>
+    <drawable name="white70">#70ffffff</drawable>
+    <drawable name="whiteff">#ffffffff</drawable>
 </resources>

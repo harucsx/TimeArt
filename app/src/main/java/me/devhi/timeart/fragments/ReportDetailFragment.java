@@ -1,35 +1,45 @@
-package me.devhi.timeart;
+package me.devhi.timeart.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.Entry;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ReportFragment extends Fragment {
+import me.devhi.timeart.R;
 
-    BarChart report_chart;
+public class ReportDetailFragment extends Fragment {
 
-    public ReportFragment() {
+    private BarChart report_chart;
+    private TextView title_report_detail;
+
+    public ReportDetailFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_report, container, false);
+        View view = inflater.inflate(R.layout.fragment_report_detail, container, false);
 
+        title_report_detail = (TextView) view.findViewById(R.id.title_report_detail);
         report_chart = (BarChart) view.findViewById(R.id.report_chart);
+
+        Bundle arguments = getArguments();
+
+//        if (arguments != null) {
+//            title_report_detail.setText(arguments.getString("title", "Default"));
+//        }
+
         report_chart.setDrawGridBackground(true);
         report_chart.setGridBackgroundColor(getResources().getColor(R.color.colorChartBackground));
         report_chart.setNoDataText("서버로부터 정보를 불러올 수 없습니다.");
@@ -42,7 +52,6 @@ public class ReportFragment extends Fragment {
         report_chart.getLegend().setEnabled(false);
 
 //        report_chart.setGr
-
 //        EnvData[] dataObjects = ...;
 
         List<BarEntry> entries = new ArrayList<BarEntry>();

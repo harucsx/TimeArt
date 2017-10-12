@@ -1,10 +1,12 @@
-package me.devhi.timeart;
+package me.devhi.timeart.fragments;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +19,22 @@ import com.koushikdutta.ion.Ion;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
+import io.realm.Sort;
+import me.devhi.timeart.models.EnvData;
+import me.devhi.timeart.models.EnvDataMode;
+import me.devhi.timeart.MainActivity;
+import me.devhi.timeart.R;
+
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
-    TextView txtDataTypeTitle, txtDataState, txtDataValue, txtDataTime, txtDataTemp, txtDataHumid;
-    TextView txtDataDust25, txtDataDust100, txtDataDCIndex, txtDataCO2;
+    private Realm realm;
+    private TimerTask loadEnvDataTask;
 
-    //    EnvDataRecieveTask envDataRecieveTask = new EnvDataRecieveTask();
+    private TextView txtDataTypeTitle, txtDataState, txtDataValue, txtDataTime, txtDataTemp, txtDataHumid;
+    private TextView txtDataDust25, txtDataDust100, txtDataDCIndex, txtDataCO2;
+
     public HomeFragment() {
     }
 
@@ -31,6 +43,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+
+        realm = Realm.getDefaultInstance();
 
         txtDataTypeTitle = (TextView) view.findViewById(R.id.txtDataTypeTitle);
         txtDataState = (TextView) view.findViewById(R.id.txtDataState);
@@ -49,42 +63,30 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txtDataDCIndex.setOnClickListener(this);
         txtDataCO2.setOnClickListener(this);
 
-        TimerTask loadEnvDataTask = new TimerTask() {
-            public void run() {
-                try {
-
-                    Ion.with(getContext())
-                            .load("http://121.67.246.208/add/")
-                            .asString();
-
-                    Ion.with(getContext())
-                            .load("http://121.67.246.208/latest/")
-                            .asJsonObject()
-                            .setCallback(new FutureCallback<JsonObject>() {
-                                @Override
-                                public void onCompleted(Exception e, JsonObject result) {
-                                    saveDataSet(result);
-                                    changeDataSet();
-                                }
-                            });
-
-                } catch (Exception e) {
-
-                }
-            }
-        };
-
-        Timer timer = new Timer();
-        timer.schedule(loadEnvDataTask, 0, 5000); // 0초후 첫실행, 3초마다 계속실행
-
         return view;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        enableDataLoader(loadEnvDataTask);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        disableDataLoader(loadEnvDataTask);
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
 
-        ((MainActivity) getActivity()).BackgroundLayout.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.bg_good));
+        MainActivity mainActivity = (MainActivity) getActivity();
+        ConstraintLayout backgroundLayout = mainActivity.backgroundLayout;
+        backgroundLayout.setBackground(ContextCompat.getDrawable(getContext(), R.mipmap.bg_good));
     }
 
     @Override
@@ -102,25 +104,73 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         changeDataSet();
     }
 
-    private void saveDataSet(JsonObject result){
-        EnvData envData = EnvDataMode.getEnvData();
+    private void enableDataLoader(TimerTask timerTask) {
+        timerTask = new TimerTask() {
+            public void run() {
+                try {
+                    // TODO : TEST CODE
 
-        envData.setDust25(result.get("dust25").getAsInt());
-        envData.setDust100(result.get("dust100").getAsInt());
-        envData.setDcIndex(result.get("discomfort_index").getAsInt());
-        envData.setCo2(result.get("co2").getAsInt());
-        envData.setTemp(result.get("temp").getAsDouble());
-        envData.setHumid(result.get("humid").getAsDouble());
-        envData.setDatetime(result.get("created_at").getAsString());
+                    Log.i("TimeArt", "Task do.");
+
+                    Ion.with(getActivity())
+                            .load("http://121.67.246.209:81/add/")
+                            .asString();
+
+                    Ion.with(getActivity())
+                            .load("http://121.67.246.209:81/latest/")
+                            .asJsonObject()
+                            .setCallback(new FutureCallback<JsonObject>() {
+                                @Override
+                                public void onCompleted(Exception e, JsonObject result) {
+                                    try {
+                                        saveDataSet(result);
+                                    } catch (Exception e1) {
+                                        e1.printStackTrace();
+                                    }
+                                }
+                            });
+
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    this.cancel();
+                }
+            }
+        };
+
+        Timer timer = new Timer();
+        timer.schedule(timerTask, 0, 5000); // 0초후 첫 실행, 5초마다 반복 실행
     }
 
-    private void changeDataSet(){
+    private void disableDataLoader(TimerTask timerTask) {
+        if (timerTask != null) {
+            timerTask.cancel();
+        }
+    }
+
+    private void saveDataSet(final JsonObject result) {
+        if (result != null) {
+            realm.executeTransactionAsync(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.createObjectFromJson(EnvData.class, result.toString());
+                }
+            }, new Realm.Transaction.OnSuccess() {
+                @Override
+                public void onSuccess() {
+                    changeDataSet();
+                }
+            });
+        }
+    }
+
+    private void changeDataSet() {
         changeDataBackground();
-        changeDataButton();
+        changeDataButtonLabel();
         changeDataButtonStyle();
     }
 
-    private void changeDataBackground(){
+    private void changeDataBackground() {
+        ConstraintLayout backgroundLayout = null;
         int background_resource = 0;
 
         switch (EnvDataMode.getState()) {
@@ -136,29 +186,36 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
         }
 
-        ((MainActivity) getActivity()).BackgroundLayout.setBackground(ContextCompat.getDrawable(getContext(), background_resource));
+        if (getActivity() != null) {
+            backgroundLayout = ((MainActivity) getActivity()).backgroundLayout;
 
+            if (backgroundLayout != null) {
+                backgroundLayout.setBackground(ContextCompat.getDrawable(getContext(), background_resource));
+            }
+        }
     }
 
-    private void changeDataButton(){
+    private void changeDataButtonLabel() {
         EnvData envData = EnvDataMode.getEnvData();
 
         txtDataTypeTitle.setText(Html.fromHtml("<u>" + EnvDataMode.getName() + "</u>"));
+
         txtDataState.setText(EnvDataMode.getStateString());
         txtDataValue.setText(EnvDataMode.getValue() + " " + EnvDataMode.getCurrentUnit());
-        txtDataTime.setText(envData.getDatetime());
+
+        txtDataTime.setText(envData.getCreatedAt());
         txtDataTemp.setText(envData.getTemp() + " ℃");
         txtDataHumid.setText(envData.getHumid() + "%");
         txtDataDust25.setText("초미세먼지 PM2.5\n" + envData.getDust25() + " μg/m³");
         txtDataDust100.setText("미세먼지 PM10\n" + envData.getDust100() + " μg/m³");
-        txtDataDCIndex.setText("불쾌지수 " + envData.getDcIndex());
+        txtDataDCIndex.setText("불쾌지수 " + envData.getDiscomfortIndex());
         txtDataCO2.setText("이산화탄소 " + envData.getCo2() + "ppm");
     }
 
-    private void changeDataButtonStyle(){
+    private void changeDataButtonStyle() {
         Drawable data_background = null;
 
-        switch (EnvDataMode.getState()){
+        switch (EnvDataMode.getState()) {
             case EnvDataMode.GOOD:
                 data_background = getResources().getDrawable(R.mipmap.rounded_border_br);
                 break;
@@ -176,7 +233,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         txtDataDCIndex.setBackground(getResources().getDrawable(R.mipmap.rounded_border));
         txtDataCO2.setBackground(getResources().getDrawable(R.mipmap.rounded_border));
 
-        switch (EnvDataMode.getMode()){
+        switch (EnvDataMode.getMode()) {
             case EnvDataMode.DUST25:
                 txtDataDust25.setBackground(data_background);
                 break;
@@ -191,15 +248,4 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 break;
         }
     }
-
-//    private void changeColor() {
-//        if (Build.VERSION.SDK_INT >= 21) {
-//
-//        }
-//        Window window = getActivity().getWindow();
-//        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUENT_STATUS);
-//        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUND);
-//        window.setStatusBarColor(null);
-//    }
-
 }

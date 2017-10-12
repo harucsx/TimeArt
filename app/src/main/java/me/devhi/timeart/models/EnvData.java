@@ -1,20 +1,31 @@
-package me.devhi.timeart;
+package me.devhi.timeart.models;
 
-public class EnvData {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class EnvData extends RealmObject {
+
+    @PrimaryKey
+    private long pk;
+
     private int dust25 = 0;
     private int dust100 = 0;
-    private int dcIndex = 0;
+    private int discomfort_index = 0;
     private int co2 = 0;
     private double temp = 0.0;
     private double humid = 0.0;
-    private String datetime = "";
+    private String created_at = "";
 
-    public String getDatetime() {
-        return datetime;
+    public long getPk() {
+        return pk;
     }
 
-    public void setDatetime(String datetime) {
-        this.datetime = datetime;
+    public String getCreatedAt() {
+        return created_at;
+    }
+
+    public void setCreatedAt(String created_at) {
+        this.created_at = created_at;
     }
 
     public int getDust25() {
@@ -33,12 +44,12 @@ public class EnvData {
         this.dust100 = dust100;
     }
 
-    public int getDcIndex() {
-        return dcIndex;
+    public int getDiscomfortIndex() {
+        return discomfort_index;
     }
 
-    public void setDcIndex(int dcIndex) {
-        this.dcIndex = dcIndex;
+    public void setDiscomfortIndex(int discomfort_index) {
+        this.discomfort_index = discomfort_index;
     }
 
     public int getCo2() {
