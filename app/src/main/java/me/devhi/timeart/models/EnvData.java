@@ -75,4 +75,5 @@ public class EnvData extends RealmObject {
     public void setHumid(double humid) {
         this.humid = humid;
     }
+
 }

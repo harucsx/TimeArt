@@ -45,8 +45,8 @@
                 android:id="@+id/menu_daily"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white"
                 android:layout_weight="1"
+                android:background="@drawable/white"
                 android:orientation="vertical">
 
                 <TextView
@@ -100,8 +100,8 @@
                 android:id="@+id/menu_monthly"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/white"
                 android:layout_weight="1"
+                android:background="@drawable/white"
                 android:orientation="vertical">
 
                 <TextView
